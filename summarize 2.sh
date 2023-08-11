@@ -102,12 +102,12 @@ function check_library {
     # TODO: Check if the directory exists and implement the functionality as
     # described in the function description.
     if [[ -d "${DIR_LIBRARY}" ]]; then
-	LIBPATH="/home/linux/ieng6/cs15lfa20/cs15lfa20aoz/homework/script3/"${DIR_LIBRARY}""
-        echo "Found library at "${LIBPATH}""
+	LIBPATH=$(pwd)/"${DIR_LIBRARY}" # Changed hardcoded path to dynamic one
+        echo "Found library at ${LIBPATH}"
         return 0
     else
         echo "Making ${DIR_LIBRARY}"
-        mkdir "DIR_LIBRARY" 
+        mkdir "${DIR_LIBRARY}" 
         return 1
     fi
 }
@@ -280,50 +280,44 @@ function main {
     # Print a list of available books
     print_booklist
 
+    
     # TODO: Prompt the user for which book they would like to process and save
     # the result in the variable ind_book. (HINT: The printed book list starts
     # at 1 but bash lists are indexed by 0. Solve this however you like! But
     # make sure that your code is consistent.)
     echo -n "$MSG_PROMPT"
-    read value
-    ind_book=$value
+    read ind_book
+    ind_book=$(($ind_book - 1))
 
     # Check that the user input is an integer and in a valid range
-    if ! [ "$ind_book" -eq "$ind_book" ] &> /dev/null; then
+    if ! [[ "$ind_book" -ge 0 && "$ind_book" -lt "${#LIST_TITLES[@]}" ]]; then
         # The above test-command checks that the input argument is a valid
         # integer by trying to convert it to a number. If the conversion
         # fails, then [ "$1" -eq "$1" ] has an exit status code of 2, which
         # can be inverted using !.
-        print_input_error_and_exit
-
+	print_input_error_and_exit
+   
     # TODO: Check that the user input is in a valid range as defined by the
     # number of elements in LIST_TITLES
-    elif ! [[ "$value" -ge 1 && "$value" -le "${#LIST_TITLES[@]}" ]]; then
-        print_input_error_and_exit
-
     else
-        ind_book=$(($ind_book - 1))
-
         # TODO: Form the path to the .txt file of the book (this variable will
         # be used later!). It would be wise to create a variable to save the
         # path.
         var="${DIR_LIBRARY}"/"${LIST_FILES[$ind_book]}"
+
+        # Check if the book has been downloaded already by using the check_book
+        # properly with echo)
+        if check_book "${var}" &> /dev/null; then
+            echo "\"${LIST_TITLES[$ind_book]}\" found in library"
+        else
+            echo "\"${LIST_TITLES[$ind_book]}\" not found in library"
+            download_book "${ind_book}"
+        fi
+
+        # TODO: Count the frequency of characters by calling the function
+        # count_characters with the newly formed path as the argument.
+        count_characters "$var"
     fi
-
-
-
-    # Check if the book has been downloaded already by using the check_book
-    # properly with echo)
-    if check_book "${ind_book}" &> /dev/null; then
-        echo "\"${LIST_TITLES[$ind_book]}\" found in library"
-    else
-        echo "\"${LIST_TITLES[$ind_book]}\" not found in library"
-	download_book "${ind_book}"
-    fi
-
-    # TODO: Count the frequency of characters by calling the function
-    # count_characters with the newly formed path as the argument.
-    count_characters "$var"
 }
 
 #===============================================================================
