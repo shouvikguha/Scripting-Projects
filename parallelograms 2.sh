@@ -1,16 +1,4 @@
 #!/bin/bash
-# TODO: Complete the first line with the correct location for bash
-#
-# Name: Shouvik Guha
-# PID: A15990598
-# Account ID: cs15lfa20aoz
-# File: parallelograms.sh
-# Assignment: Scripting Project 2
-# Date: 28/11/20
-#
-#===============================================================================
-# DO NOT TOUCH BELOW THIS LINE
-#===============================================================================
 
 ERR_USAGE="Usage: ./parallelograms.sh"
 ERR_INPUT="Parallelogram size must be [2,20]."
@@ -19,9 +7,6 @@ MSG_REPLAY="Run again? (y/N): "
 U_LIMIT=20
 L_LIMIT=2
 
-#===============================================================================
-# DO NOT TOUCH ABOVE THIS LINE
-#===============================================================================
 
 # print_pattern
 # Function that prints out a parallelogram pattern row by row. The pattern
@@ -48,14 +33,7 @@ L_LIMIT=2
 # INPUT
 #   numrows: number of rows of the parallelogram that should be printed
 function print_pattern {
-    # TODO: Finish this function. You will need nested loops here, as well as
-    # basic arithmetic. This function should print the parallelograms out row by
-    # row. Remember that you can do arithmetic expressions with `bc`, `expr`, or
-    # $(( ... )). We've provided you with the skeleton code for the first
-    # triangle. Your job is to finish the rest. Be sure to match the reference
-    # implementation _exactly_!
-
-    # Index to keep track of the current row
+   
     ind=0
 
     while [ $ind -lt "$1" ]; do
@@ -64,10 +42,6 @@ function print_pattern {
             echo -n " "
         done
 
-        # TODO: Stars for first triangle
-        # HINT: Set the variable num_stars1 using the correct math for the
-        # required number of stars. The value should be:
-        #   num_stars1 = the first argument - the current index
         num_stars1=`expr $1 - $ind`
         for ((inner=0; inner < $num_stars1; inner++)); do
             echo -n "*"
@@ -75,22 +49,21 @@ function print_pattern {
 
         echo -n " " # This line is necessary for padding
 
-        # TODO: Stars for second triangle
+       
         num_stars2=`expr 1 + $ind`
 	for((inner=0; inner < $num_stars2; inner++)); do
 	    echo -n "*"
 	done
 
 
-        # TODO: Spaces between the parallelograms
-        # HINT: Remember that there is an extra space between the triangles!
+       
 	num_s1=`expr $ind \* 2`
 	num_s2=`expr $1 \* 2`
 	for ((inner=`expr $num_s2 - 1`; inner > $num_s1  ; inner-=1)); do
     	    echo -n " "
 	done
 
-        # TODO: Stars for third triangle
+     
         num_stars3=`expr 1 + $ind`
 	for((inner=0; inner < $num_stars3; inner++)); do
 	    echo -n "*"
@@ -100,7 +73,6 @@ function print_pattern {
 
 	
 
-        # TODO: Stars for fourth triangle
         num_stars4=`expr $1 - $ind`
 	for((inner=0; inner < $num_stars4; inner++)); do
 	    echo -n "*"
@@ -171,9 +143,7 @@ function main {
 
             continue
 
-        # TODO: Check that the input value from the user is within range defined
-        # by the upper limit U_LIMIT and lower limit L_LIMIT. If outside of
-        # range, then print an input error and repeat the loop.
+       
         elif ! [[ "$value" -ge "$L_LIMIT" && "$value" -le "$U_LIMIT" ]]; then
             print_input_error
 
@@ -186,27 +156,20 @@ function main {
         # Call function with number parsed
         print_pattern $value
 
-        # TODO: Prompt user to go again.
-        # HINT: This should look like the prompt above. Use the provided
-        # variables at the top of the file to get the formatting for the message
-        # correct!
+        
         echo -n "$MSG_REPLAY"
         read input
 
 
 
-        # TODO: If the user didn't type "y" or "Y", end the loop without exiting
-        # the program.
-        # HINT: Make sure your logic is correct!
+      
         if ! [[ $input == "Y" || $input == "y" ]]; then
             break
         fi
     done
 }
 
-#===============================================================================
-# DO NOT TOUCH BELOW THIS LINE
-#===============================================================================
+
 
 function ??? {
     echo "WARNING! TODO on line ${BASH_LINENO[0]} not implemented (or ??? was" \
@@ -217,6 +180,4 @@ main "$@"
 
 echo "Script finished."
 
-#===============================================================================
-# DO NOT TOUCH ABOVE THIS LINE
-#===============================================================================
+
